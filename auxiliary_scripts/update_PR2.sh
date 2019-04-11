@@ -55,6 +55,7 @@ if [ ! -z "$(command -v vsearch)" ]
 then
 	wget https://github.com/vaulot/pr2_database/releases/download/$VERSION/pr2_version_${VERSION}_UTAX.fasta.gz
 	gunzip pr2_version_${VERSION}_UTAX.fasta.gz
+	sed -i 's/-/_/g' pr2_version_${VERSION}_UTAX.fasta
 	vsearch --makeudb_usearch pr2_version_${VERSION}_UTAX.fasta --output pr2_version_${VERSION}_UTAX.udb
 	ln -s $PWD/pr2_version_${VERSION}_UTAX.udb ${TARGET_DIRECTORY}/pr2_${VERSION}.udb
 fi
