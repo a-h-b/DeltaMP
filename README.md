@@ -5,9 +5,9 @@ DeltaMP is a command line tool for high performance computer taking advantage of
 
 DeltaMP is initially developed to process **16S, 18S, ITS** raw read libraries with the most up-to-date bioinformatic workflows, but can also handle any other barcoding targets (e.g. 23/28S, COI, rbcL).
 
-DeltaMP intend to be accessible for non-bioinformatician users with its fully tunable workflows based on a TAB-separated configuration file.
+DeltaMP is intended to be accessible for non-bioinformatician users with its fully tunable workflows based on a TAB-separated configuration file.
 
-DeltaMP integrate a checkpointing feature which enable easy and efficient comparisons between different workflows applied on the same set of read libraries.
+DeltaMP integrates a checkpointing feature which enables easy and efficient comparisons between different workflows applied on the same set of read libraries.
 
 Last but not least, DeltaMP produces version controlled, reproducible and fully documented OTU tables in TAB-separated and BIOM formats readily usable for downstream taxonomic and OTU diversity analyses.
 
@@ -27,7 +27,7 @@ Last but not least, DeltaMP produces version controlled, reproducible and fully 
  - [Pipeline execution](#pipeline-execution)
    * [Quick start](#quick-start)
    * [best practices](#best-practices)
-   * [pipeline execution options](#pipeline-execution- options)
+   * [pipeline execution options](#pipeline-execution-options)
    * [Checkpointing](#checkpointing)
  - [Pipeline analysis steps](#pipeline-analysis-steps)
  - [Outputs](#outputs)
@@ -49,7 +49,7 @@ Then install following the [installation instructions](INSTALL).
 
 ## Dependencies
 
-DeltaMP is intend to be used on a HPC with a job scheduler (i.e. batch-queuing system).
+DeltaMP is intended to be used on a HPC with a job scheduler (i.e. batch-queuing system).
 
 ### supported job schedulers:
 
@@ -79,14 +79,14 @@ DeltaMP is intend to be used on a HPC with a job scheduler (i.e. batch-queuing s
 
 + [QIIME v1.8+](http://qiime.org) for 454 demultiplexing ([minimal install](http://qiime.org/1.9.0/install/install.html#native-base) is enough; Caporaso et al., 2010)
 + [FlowClus](https://github.com/jsh58/FlowClus) for 454 denoising (Gaspar and Thomas, 2015)
-+ [swarm v2](https://github.com/torognes/swarm) (Mahé et al., 2015)
++ [swarm v2](https://github.com/torognes/swarm) (MahéO et al., 2015)
 + [vsearch v2](https://github.com/torognes/vsearch) (Rognes et al., 2016)
 + [sumatra](https://git.metabarcoding.org/obitools/sumatra) and [sumaclust](https://git.metabarcoding.org/obitools/sumaclust) (Mercier et al., 2013)
 + [MCL](http://micans.org/mcl) (van Dongen, 2000)
 + [CD-HIT & cd-hit-454](http://weizhongli-lab.org/cd-hit/) for (pre-)clustering (Fu et al., 2012)
 + [ITSx](http://microbiology.se/software/itsx/) (Bengtsson‐Palme Johan et al. 2013)
 
-All this dependencies need to be available through the $PATH environmental variable or need to be loaded by the DeltaMP module file.
+All these dependencies need to be available through the $PATH environmental variable or need to be loaded by the DeltaMP module file.
 
 
 ## Quick start
@@ -96,7 +96,7 @@ All this dependencies need to be available through the $PATH environmental varia
 
 ## Usage instructions
 
-Usages could be accessed via the command line:
+Usage could be accessed via the command line:
 
 ```
 deltamp -h
@@ -270,13 +270,13 @@ The default values for the optional parameters could be displayed by using the -
 
 + __Directory path to database__: the full path to the directory containing reference sequence database files. The default is /home/$USER .
 
-+ __Database prefix name__: filename prefix identifying database files. A database have to be composed from a TAB-separated "prefix".txt file in which the second column describe the version, citation and reference of the database with the first column containing VERSION, CITATION and FULLCITATION, respectively (see e.g. <test/pr2_4.10.0.txt>) and either from a pair of "prefix".fasta and "prefix".taxonomy mothur's style database format for "bayesian" classifier, or from a "prefix".udb binary file produced by the command `vsearch --makeudb_usearch` for "vsearch" classifier. Optionnaly, a "prefix".align.fasta, containing an aligned version of the "prefix".fasta sequences, is needed for pre-clustering with "mothur". See the <test/> directory for example files in each format. You can use the "update_xxx.sh" scripts in <auxillary_scripts/> to automatically download the PR2, SILVA and UNITE databases and to format them into the previously described formats. The default is "pr2_4.10.0".
++ __Database prefix name__: filename prefix identifying database files. A database has to be composed from a TAB-separated "prefix".txt file in which the second column describe the version, citation and reference of the database with the first column containing VERSION, CITATION and FULLCITATION, respectively (see e.g. <test/pr2_4.10.0.txt>) and either from a pair of "prefix".fasta and "prefix".taxonomy mothur's style database format for "bayesian" classifier, or from a "prefix".udb binary file produced by the command `vsearch --makeudb_usearch` for "vsearch" classifier. Optionnaly, a "prefix".align.fasta, containing an aligned version of the "prefix".fasta sequences, is needed for pre-clustering with "mothur". See the <test/> directory for example files in each format. You can use the "update_xxx.sh" scripts in <auxillary_scripts/> to automatically download the PR2, SILVA and UNITE databases and to format them into the previously described formats. The default is "pr2_4.10.0".
 
-+ __Reduce database to amplified fragment__: "yes" or "no", to cut the database reference sequences using either the provided primers or ITSx with the provided 'ITSx region to extract' or do nothing, respectively. If set to "yes", this also use the cut database for taxonomic assignment, while if set to "no" this will use the full database sequences for taxonomic assignment. If a unique cut read is produced from multiple accessions with different taxonomic path, the cut read will be annotated with the least common ancestor. If set to "yes" and the cut database is already present in the "Directory path to database", the database cutting is skipped. The default is "no".
++ __Reduce database to amplified fragment__: "yes" or "no", to cut the database reference sequences using either the provided primers or ITSx with the provided 'ITSx region to extract' or do nothing, respectively. If set to "yes", this also uses the cut database for taxonomic assignment, while if set to "no" this will use the full database sequences for taxonomic assignment. If the same cut read is produced from multiple accessions with different taxonomic paths, the cut read will be annotated with the least common ancestor. If set to "yes" and the cut database is already present in the "Directory path to database", the database cutting is skipped. The default is "no".
 
-+ __Consensus assignment threshold__: a number between 50 and 100. Consensus threshold percent to assign a taxonomic rank among the matches. For "bayesian" taxonomic calssifier the matches are the 100 bootstrap matches, for "vsearch" the matches are the best match(es) plus the match(es) in a 1 % similarity range below the best match(es) similarity. The default is 60.
++ __Consensus assignment threshold__: a number between 50 and 100. Consensus threshold percent to assign a taxonomic rank among the matches. For "bayesian" taxonomic classifier the matches are the 100 bootstrap matches, for "vsearch" the matches are the best match(es) plus the match(es) in a 1 % similarity range below the best match(es) similarity. The default is 60.
 
-+ __Assign all reads__: the accepted values are “yes” or “no”. Activating this option will assign all dereplicated or pre-clustered reads to a taxonomy. A consensus assignment is then determined for each OTU at a threshold of 60 %. If set to “no”, only the most abundant read per OTU will be assigned to taxonomy. The default is “no”.
++ __Assign all reads__: the accepted values are “yes” or “no”. Activating this option will assign all dereplicated or pre-clustered reads to a taxonomy. A consensus assignment is thenetermined for each OTU at a threshold of 60 %. If set to “no”, only the most abundant read per OTU will be assigned to taxonomy. The default is “no”.
 
 + __Assign putative function__: "yes" or "no" to assign putative function to Fungi using the FUNGuild database (Nguyen et al., 2016).
 
@@ -317,7 +317,7 @@ Once all step's jobs are completed, the outputs are copied back into the "Path t
 ### Directories structure
 
 + output SUBPROJECT directory:
-   * from stratup: directory config/ containing the initial configuration file renamed configuration.SUBPROJECT.tsv and internal configuration text files
+   * from startup: directory config/ containing the initial configuration file renamed configuration.SUBPROJECT.tsv and internal configuration text files
    * at execution end: files SUBPROJECT.documentation.txt and archives SUBPROJECT.outputs.tar.gz and SUBPROJECT.processing.files.tar.gz (and respective md5sum)
    
 + execution SUBPROJECT directory:
@@ -354,15 +354,15 @@ In order to avoid to run the pipeline from the beginning if only one parameter i
 Checkpointing is turn on by default, which means that if any SUBPROJECT with the same target, same sequencing technology and the same list of samples is found in the "Path to output location/PROJECT" directory, all configuration parameters and option values will be compared.
 
 Then come different situations:
-+ if a previous SUBPROJECT have the same set of configuration parameters and option values than for the current deltamp call, and error message is issued and nothing appends to avoid any useless re-calculation. If the users really want to re-compute, he/she will have to first delete the previous SUBPROJECT, to change the "Path to output location" or to disable checkpointing with option -n.
++ if a previous SUBPROJECT has the same set of configuration parameters and option values as the current deltamp call, an error message is issued and nothing happens to avoid any useless re-calculation. If the users really want to re-compute, he/she will have to first delete the previous SUBPROJECT, to change the "Path to output location" or to disable checkpointing with option -n.
 
-+ if a previous SUBPROJECT have the same set of configuration parameters and option values than for the current deltamp call, but the SAMPLES section differs, and error message is issued and nothing appends to avoid checkpointing for different sets of samples/libraries. If the users really want to re-compute, he/she will have to first delete the previous SUBPROJECT, to change the "Path to output location" or to disable checkpointing with option -n.
++ if a previous SUBPROJECT has the same set of configuration parameters and option values as the current deltamp call, but the SAMPLES section differs, an error message is issued and nothing happens to avoid checkpointing for different sets of samples/libraries. If the users really want to re-compute, he/she will have to first delete the previous SUBPROJECT, to change the "Path to output location" or to disable checkpointing with option -n.
 
-+ if at least one configuration parameter or option value differs with any previous SUBPROJECT, a new SUBPROJECT will be created and the computation will start directly after the last common step, while all files and directories produced during the common steps of the previous SUBPROJECT are symlinked to the execution directory or hard copied to the output directory of the new SUBPROJECT. If multiple previous SUBPROJECT exist, the previous SUBPROJECT is the one with the highest amount of common steps (then the oldest if still multiple previous SUBPROJECT). 
++ if at least one configuration parameter or option value differs from any previous SUBPROJECT, a new SUBPROJECT will be created and the computation will start directly after the last common step, while all files and directories produced during the common steps of the previous SUBPROJECT are symlinked to the execution directory or hard copied to the output directory of the new SUBPROJECT. If multiple previous SUBPROJECT exist, the previous SUBPROJECT is the one with the highest amount of common steps (then the oldest if still multiple previous SUBPROJECT). 
 
 Relationship tree among successive checkpointed SUBPROJECTs are documented in the output directory of SUBPROJECTs with at least one previous SUBPROJECT at config/tree.summary.
 
-Checkpointing could be repeated multiple times, so long at least one parameter differ with any of the previous SUBPROJECTs.
+Checkpointing could be repeated multiple times, as long as at least one parameter differs from any of the previous SUBPROJECTs.
 
 The previous SUBPROJECT could be hard set with the -p option, otherwise the previous SUBPROJECT with highest number of common steps will be taken as reference.
 
@@ -401,7 +401,7 @@ For 454 or Illumina specific steps, step script filenames follow “454_xxx.sh�
 + archiving: compress raw demultiplexed reads (if demultiplexing), pipeline outputs and processing file in separated tar.gz archives; copy to the output directory
 + doc: create the complete documentation of the pipeline processes; one serial job
 
-Each step job is waiting in the queue so long its preceeding step job is not completed, except for the cut_db step which do not have to wait on any job completion. For checkpointing, the init step job will wait on the completion of the last common step job from the previous SUBPROJECT.
+Each step job is waiting in the queue as long as its preceeding step job is not completed, except for the cut_db step which does not have to wait for any job completion. For checkpointing, the init step job will wait for the completion of the last common step job from the previous SUBPROJECT.
 
 
 ## Outputs
@@ -436,11 +436,11 @@ If a job is waiting in error state or if it dependencies is never satisfied, it 
 
 If it concerns the quality step, the most common error is a number of reads below the set limit.
 
-For any other jobs, it means that the previous step unexpectedly terminate before its end or that an error was issued by mothur in the previous step.
+For all other jobs, it means that the previous step unexpectedly terminated before its end or that an error was issued by mothur in the previous step.
 
 In all those cases, check the standard output (.out) and standard error (.err) log files of the respective step(s) and array(s), which are situated in the "Path to execution location"/SUBPROJECT/log directory.
 
-To detect job terminated due to overpassing requested memory and/or time, compare the requested memory/time in the problematic step's script with the maximum used memory/runtime during job execution. To print job's record after execution, use `qacct` (grid Engine) or `sacct` (SLURM).
+To detect jobs terminated due to overpassing requested memory and/or time, compare the requested memory/time in the problematic step's script with the maximum used memory/runtime during job execution. To print job's record after execution, use `qacct` (grid Engine) or `sacct` (SLURM).
 
 For unsolved issues, send an email to lentendu@rhrk.uni-kl.de, including the .out and .err log files as well as the output of the qacct command for the problematic job.
 
