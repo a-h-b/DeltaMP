@@ -40,15 +40,15 @@ TARGET_DIRECTORY=$(readlink -f $2)
 
 wget -O - https://www.arb-silva.de/fileadmin/silva_databases/release_${VERSION}/Exports/SILVA_${VERSION}_SSURef_Nr99_tax_silva_trunc.fasta.gz | dd of=SILVA_${VERSION}_SSURef_Nr99_tax_silva_trunc.fasta.gz bs=1M
 wget https://www.arb-silva.de/fileadmin/silva_databases/release_${VERSION}/Exports/SILVA_${VERSION}_SSURef_Nr99_tax_silva_trunc.fasta.gz.md5
-wget -O - https://www.arb-silva.de/fileadmin/silva_databases/release_${VERSION}/Exports/SILVA_${VERSION}_SSURef_Nr99_tax_silva_full_align_trunc.fasta.gz | dd of=SILVA_${VERSION}_SSURef_Nr99_tax_silva_fill_align_trunc.fasta.gz bs=1M
+wget -O - https://www.arb-silva.de/fileadmin/silva_databases/release_${VERSION}/Exports/SILVA_${VERSION}_SSURef_Nr99_tax_silva_full_align_trunc.fasta.gz | dd of=SILVA_${VERSION}_SSURef_Nr99_tax_silva_full_align_trunc.fasta.gz bs=1M
 wget https://www.arb-silva.de/fileadmin/silva_databases/release_${VERSION}/Exports/SILVA_${VERSION}_SSURef_Nr99_tax_silva_full_align_trunc.fasta.gz.md5
 
-if [ ! -z $(md5sum --quiet -c SILVA_132_SSURef_Nr99_tax_silva_trunc.fasta.gz.md5) ]
+if [ ! -z $(md5sum --quiet -c SILVA_${VERSION}_SSURef_Nr99_tax_silva_trunc.fasta.gz.md5) ]
 then
         echo "MD5 sum mismatch, retry to download."
         exit 1
 fi
-if [ ! -z $(md5sum --quiet -c SILVA_132_SSURef_Nr99_tax_silva_full_align_trunc.fasta.gz.md5) ]
+if [ ! -z $(md5sum --quiet -c SILVA_${VERSION}_SSURef_Nr99_tax_silva_full_align_trunc.fasta.gz.md5) ]
 then
         echo "MD5 sum mismatch, retry to download."
         exit 1
