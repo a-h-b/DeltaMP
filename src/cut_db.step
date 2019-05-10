@@ -60,7 +60,7 @@ then
 	
 	# Format to vsearch udb database for singleton including version
 	sed '$!N;/>/s/\n/ /;s/>//' ${DB}_s.$ITSX.fasta | sort -k 1,1 | join - <(sort -k 1,1 ${DB}_s.$ITSX.taxonomy) | sed 's/;$//;s/;/,/g' | awk '{print ">"$1";tax="$3";\n"$2}' > vsearch.${DB}_s.$ITSX.fasta
-	vsearch --makeudb_usearch vsearch.${DB}_s.$ITSX.fasta --output ${DB}_s.$ITSX.udb
+	vsearch --makeudb_usearch vsearch.${DB}_s.$ITSX.fasta --output ${DB}_s.$ITSX.udb --threads $NCPUS
 	rm vsearch.${DB}_s.$ITSX.fasta
 elif [[ $DB =~ [Ss][Ii][Ll][Vv][Aa] ]]
 then
@@ -204,7 +204,7 @@ else
 	paste - - < $DBCUT.cut.fasta | sort -k 1,1 | join <(sort -k 1,1 $DBFOLD/$DB.taxonomy | sed 's/^/>/;s/;$//;s/;/|/g') - | awk '{rank=split($2,a,"|");print $1,"ranks="rank"; taxo="$2";\n"$3}' | obigrep --without-progress-bar -p 'ranks>2' -l $MINLEN -L 800 -s '^[atcg]*$' | obigrep -v -s $(echo $PRIMER_REG | sed 's/ /|/g') | sed 's/ .*taxo=/ /;s/; *$//' | twofasta | sed '$!N;/>/s/\n/ /' | sort -k 2,2 | awk '{if($2==prev){print $1"\n"$3} else {print "#"$1"\n"$3;prev=$2}}' > $DBCUT.taxo.fasth
 	# For each taxonomic path with more than a sequence, dereplicate then cluster with swarm and keep only the seed
 	clust() {
-		cat /dev/stdin | parallel --recstart "#" --remove-rec-sep --pipe -N1 "cat | vsearch --derep_fulllength - --sizeout --quiet --output - | swarm -n -z -w seed.$1.{#} -o swarm.$1.{#} -l /dev/null"
+		cat /dev/stdin | parallel --recstart "#" --remove-rec-sep --pipe -N1 "cat | vsearch --derep_fulllength - --sizeout --quiet --output - --threads 1 | swarm -n -z -w seed.$1.{#} -o swarm.$1.{#} -l /dev/null"
 		cat seed.$1.* > seed.$1
 		cat swarm.$1.* > swarm.$1
 		rm seed.$1.* swarm.$1.*
@@ -227,7 +227,7 @@ rm tmp.$DBCUT*
 
 # Format to vsearch udb database
 sed '$!N;/>/s/\n/ /;s/>//' $DBCUT.fasta | sort -k 1,1 | join - <(sort -k 1,1 $DBCUT.taxonomy) | sed 's/;$//;s/;/,/g' | awk '{print ">"$1";tax="$3";\n"$2}' > vsearch.$DBCUT.fasta
-vsearch --makeudb_usearch vsearch.$DBCUT.fasta --output $DBCUT.udb
+vsearch --makeudb_usearch vsearch.$DBCUT.fasta --output $DBCUT.udb --threads $NCPUS
 rm vsearch.$DBCUT.fasta
 
 # change permissions
